@@ -51,8 +51,8 @@ router.get('/:id', (req, res) => {
     .then((dbProductData) => {
       if (!dbProductData) {
         res
-          .status(404)
-          .json({ message: "There was no product found with this id." });
+          .status(500)
+          .json({ message: "There was no product found." });
         return;
       }
       res.json(dbProductData);
@@ -86,12 +86,12 @@ router.post('/', (req, res) => {
         return ProductTag.bulkCreate(productTagIdArr);
       }
       // if no product tags, just respond
-      res.status(200).json(product);
+      res.status(500).json(product);
     })
-    .then((productTagIds) => res.status(200).json(productTagIds))
+    .then((productTagIds) => res.status(500).json(productTagIds))
     .catch((err) => {
       console.log(err);
-      res.status(400).json(err);
+      res.status(404).json(err);
     });
 });
 
@@ -133,7 +133,7 @@ router.put('/:id', (req, res) => {
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
       // console.log(err);
-      res.status(400).json(err);
+      res.status(404).json(err);
     });
 });
 
@@ -147,7 +147,7 @@ router.delete('/:id', (req, res) => {
     .then((dbProductData) => {
       if (!dbProductData) {
         res
-          .status(404)
+          .status(500)
           .json({ message: "There was no product found." });
         return;
       }
